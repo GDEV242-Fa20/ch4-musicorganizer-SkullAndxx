@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.*;
 
 /**
  * A class to hold details of audio tracks.
  * Individual tracks may be played.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29
+ * Added randomTrack method 4.43
+ * Added randomAllPlay method 4.45
+ * @author Erick Rubio
+ * @version 2020.10.05
  */
 public class MusicOrganizer
 {
@@ -171,19 +174,49 @@ public class MusicOrganizer
             addTrack(track);
         }
     }
-        /**
-         * exercise 4.43
-         * Random music player
-           */
-        public void randomTrack(){
-            int totalSongs = tracks.size();
+    /**
+     * exercise 4.43
+     * Random music player
+       */
+    public void randomTrack(){
+        int totalSongs = tracks.size();
+        
+        //Create random instance and assign a random song to it.
+        Random rand = new Random();
+        int randomSong = rand.nextInt(totalSongs);
+        
+        Track track = tracks.get(randomSong);
+        player.startPlaying(track.getFilename());
+        System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());           
+    }
+    /**
+     * exercise 4.45
+     * Random music player
+       */
+    public void randomAllTracks(){
+        //Create a random list ot affecting original list
+        ArrayList<Track> randomList = new ArrayList<>(tracks);
+        Collections.shuffle(randomList); 
+        
+        Iterator<Track> songs = randomList.iterator();
+        while(songs.hasNext()){
+            Track t = songs.next();
+            //Track track = tracks.get(t);
+            System.out.println("Now playing: " + t.getArtist() + " - " + t.getTitle()); 
+            player.playSample(t.getFilename());
+
+            //String filename = t.getFilename();
+            songs.remove();
             
-            //Create random instance and assign a random song to it.
-            Random rand = new Random();
-            int randomSong = rand.nextInt(totalSongs);
-            
-            Track track = tracks.get(randomSong);
-            player.startPlaying(track.getFilename());
-            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());           
         }
+        // System.out.println("Track listing: ");
+
+        // for(Track track : randomList) {
+            // System.out.println(track.getDetails());
+        // }
+        // System.out.println();
+        // Track track = tracks.get(randomSong);
+        // player.playSample(track.getFilename());
+        // System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());           
+    }
 }
